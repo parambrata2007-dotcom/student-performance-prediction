@@ -85,22 +85,9 @@ def generate_recommendations(student, predicted_category):
             "Improve your attendance and try to maintain it above 75%."
         )
 
-    # 3. Find weakest subject
-    subjects = {
-        "Mathematics": student["math_score"],
-        "Science": student["science_score"],
-        "English": student["english_score"]
-    }
+  
 
-    weakest_subject = min(subjects, key=subjects.get)
-    weakest_score = subjects[weakest_subject]
-
-    if weakest_score < 60:
-        recommendations.append(
-            f"Focus more on {weakest_subject}; your score is {weakest_score:.1f}."
-        )
-
-    # 4. Performance category
+    # 3. Performance category
     if predicted_category == "Low":
         recommendations.append(
             "Your predicted performance is Low. Attend additional practice "
@@ -205,42 +192,6 @@ with col2:
     )
 
 
-# ---------------------------------------------------------
-# SUBJECT-WISE MARKS
-# ---------------------------------------------------------
-
-st.divider()
-st.header("📚 Subject-wise Marks")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    math_score = st.number_input(
-        "Mathematics Score",
-        min_value=0.0,
-        max_value=100.0,
-        value=50.0,
-        step=1.0
-    )
-
-with col2:
-    science_score = st.number_input(
-        "Science Score",
-        min_value=0.0,
-        max_value=100.0,
-        value=50.0,
-        step=1.0
-    )
-
-with col3:
-    english_score = st.number_input(
-        "English Score",
-        min_value=0.0,
-        max_value=100.0,
-        value=50.0,
-        step=1.0
-    )
-
 
 # ---------------------------------------------------------
 # RUN PREDICTION
@@ -311,9 +262,7 @@ if run_prediction:
         "travel_time": travel_time,
         "extra_activities": extra_activities,
         "study_method": study_method,
-        "math_score": math_score,
-        "science_score": science_score,
-        "english_score": english_score
+       
     }
 
     recommendations = generate_recommendations(
@@ -364,9 +313,6 @@ if run_prediction:
             "Age",
             "Study Hours per Day",
             "Attendance Percentage",
-            "Mathematics Score",
-            "Science Score",
-            "English Score",
             "Predicted Overall Score",
             "Predicted Performance"
         ],
@@ -374,9 +320,6 @@ if run_prediction:
             age,
             study_hours,
             attendance_percentage,
-            math_score,
-            science_score,
-            english_score,
             round(predicted_score, 2),
             predicted_category
         ]
@@ -395,29 +338,6 @@ if run_prediction:
 
 st.divider()
 st.header("📈 Student Performance Analytics")
-
-# ---------------------------------------------------------
-# VISUALIZATION 1: SUBJECT-WISE PERFORMANCE
-# ---------------------------------------------------------
-
-st.subheader("📚 Subject-wise Performance")
-
-score_comparison = pd.DataFrame({
-    "Subject": [
-        "Mathematics",
-        "Science",
-        "English"
-    ],
-    "Score": [
-        math_score,
-        science_score,
-        english_score
-    ]
-})
-
-st.bar_chart(
-    score_comparison.set_index("Subject")
-)
 
 
 # ---------------------------------------------------------
